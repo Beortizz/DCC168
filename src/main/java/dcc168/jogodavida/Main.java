@@ -5,6 +5,6 @@ package dcc168.jogodavida;
 public class Main {
     public static void main(String[] args) {
         JogoDaVida jogo = new JogoDaVida();
-        JogoDaVida.main(args);
+        jogo.Run();
     }
 }
