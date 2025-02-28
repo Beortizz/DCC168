@@ -1,90 +1,27 @@
 package dcc168.jogodavida;
+
 import java.util.Random;
 import java.util.Scanner;
 
 
 public class JogoDaVida {
-    private static final int TAMANHO = 6;
+    private int TAMANHO = 6;
     private int[][] tabuleiro;
 
     public JogoDaVida() {
-        tabuleiro = new int[TAMANHO][TAMANHO];
-        inicializarTabuleiro();
+        this.setTabuleiro(new int[TAMANHO][TAMANHO]);
     }
 
-    public void setTabuleiro(int[][] tabuleiro) {
-        this.tabuleiro = tabuleiro;
+    public static JogoDaVida NewEmptyGame() {
+        var jogo = new JogoDaVida();
+        var tam = jogo.TAMANHO;
+        jogo.setTabuleiro(new int[tam][tam]);
+        return jogo;
     }
 
-    public int getCelula(int x, int y) {
-        return tabuleiro[x][y];
-    }
-
-    private void inicializarTabuleiro() {
-        Random random = new Random();
-        for (int i = 0; i < TAMANHO; i++) {
-            for (int j = 0; j < TAMANHO; j++) {
-                tabuleiro[i][j] = random.nextInt(2);
-            }
-        }
-    }
-
-    public void mostrarTabuleiro() {
-        for (int i = 0; i < TAMANHO; i++) {
-            for (int j = 0; j < TAMANHO; j++) {
-                System.out.print(tabuleiro[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    public void proximaGeracao() {
-        int[][] novoTabuleiro = new int[TAMANHO][TAMANHO];
-
-        for (int i = 0; i < TAMANHO; i++) {
-            for (int j = 0; j < TAMANHO; j++) {
-                int vizinhosVivos = contarVizinhosVivos(i, j);
-
-                if (tabuleiro[i][j] == 1) {
-                    if (vizinhosVivos < 2 || vizinhosVivos > 3) {
-                        novoTabuleiro[i][j] = 0;
-                    } else {
-                        novoTabuleiro[i][j] = 1;
-                    }
-                } else {
-                    if (vizinhosVivos == 3) {
-                        novoTabuleiro[i][j] = 1;
-                    } else {
-                        novoTabuleiro[i][j] = 0;
-                    }
-                }
-            }
-        }
-
-        tabuleiro = novoTabuleiro;
-    }
-
-    private int contarVizinhosVivos(int x, int y) {
-        int contagem = 0;
-        int[] direcoes = {-1, 0, 1};
-
-        for (int dx : direcoes) {
-            for (int dy : direcoes) {
-                if (dx == 0 && dy == 0) continue;
-                int nx = x + dx;
-                int ny = y + dy;
-
-                if (nx >= 0 && nx < TAMANHO && ny >= 0 && ny < TAMANHO) {
-                    contagem += tabuleiro[nx][ny];
-                }
-            }
-        }
-
-        return contagem;
-    }
-
-    public static void main(String[] args) {
+    public void Run() {
         JogoDaVida jogo = new JogoDaVida();
+        jogo.inicializarTabuleiro();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -100,5 +37,80 @@ public class JogoDaVida {
         }
 
         scanner.close();
+    }
+
+    public void setTabuleiro(int[][] tabuleiro) {
+        this.tabuleiro = tabuleiro;
+        this.TAMANHO = tabuleiro.length;
+    }
+
+    public int getCelula(int x, int y) {
+        return tabuleiro[x][y];
+    }
+
+    public void setCelula(int x, int y, int valor) {
+        tabuleiro[x][y] = valor;
+    }
+
+    private void inicializarTabuleiro() {
+        Random random = new Random();
+        for (int lin = 0; lin < TAMANHO; lin++) {
+            for (int col = 0; col < TAMANHO; col++) {
+                tabuleiro[lin][col] = random.nextInt(2);
+            }
+        }
+    }
+
+    public void mostrarTabuleiro() {
+        for (int lin = 0; lin < TAMANHO; lin++) {
+            for (int col = 0; col < TAMANHO; col++) {
+                System.out.print(tabuleiro[lin][col] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void proximaGeracao() {
+        int[][] novoTabuleiro = new int[TAMANHO][TAMANHO];
+
+        for (int lin = 0; lin < TAMANHO; lin++) {
+            for (int col = 0; col < TAMANHO; col++) {
+                int vizinhosVivos = contarVizinhosVivos(lin, col);
+
+                if (tabuleiro[lin][col] == 1) {
+                    if (vizinhosVivos < 2 || vizinhosVivos > 3) {
+                        novoTabuleiro[lin][col] = 0;
+                    } else {
+                        novoTabuleiro[lin][col] = 1;
+                    }
+                } else {
+                    if (vizinhosVivos == 3) {
+                        novoTabuleiro[lin][col] = 1;
+                    }
+                }
+            }
+        }
+
+        tabuleiro = novoTabuleiro;
+    }
+
+    public int contarVizinhosVivos(int x, int y) {
+        int contagem = 0;
+        int[] direcoes = {-1, 0, 1};
+
+        for (int dx : direcoes) {
+            for (int dy : direcoes) {
+                int nx = x + dx;
+                int ny = y + dy;
+                if (nx >= 0 && nx < TAMANHO && ny >= 0 && ny < TAMANHO) {
+                    if (nx != x || ny != y) {
+                        contagem += tabuleiro[nx][ny];
+                    }
+                }
+
+            }
+        }
+
+        return contagem;
     }
 }
