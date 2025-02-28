@@ -22,10 +22,14 @@ public class JogoDaVida {
             System.out.println("Digite ENTER para a próxima geração ou 'sair' para finalizar.");
             String entrada = scanner.nextLine();
 
-            if (entrada.equalsIgnoreCase("sair")) {
+            if (entrada.equalsIgnoreCase("sair"))
                 break;
+            else if (entrada.equalsIgnoreCase(""))
+                this.proximaGeracao();
+            else {
+                scanner.close();
+                throw new RuntimeException("Entrada inválida.");
             }
-            this.proximaGeracao();
         }
 
         scanner.close();
