@@ -12,13 +12,6 @@ public class JogoDaVida {
         this.setTabuleiro(new int[TAMANHO][TAMANHO]);
     }
 
-    public static JogoDaVida NewEmptyGame() {
-        var jogo = new JogoDaVida();
-        var tam = jogo.TAMANHO;
-        jogo.setTabuleiro(new int[tam][tam]);
-        return jogo;
-    }
-
     public void Run() {
         JogoDaVida jogo = new JogoDaVida();
         jogo.inicializarTabuleiro();
