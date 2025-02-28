@@ -13,20 +13,19 @@ public class JogoDaVida {
     }
 
     public void Run() {
-        JogoDaVida jogo = new JogoDaVida();
-        jogo.inicializarTabuleiro();
+        this.inicializarTabuleiro();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("Geração Atual:");
-            jogo.mostrarTabuleiro();
+            this.mostrarTabuleiro();
             System.out.println("Digite ENTER para a próxima geração ou 'sair' para finalizar.");
             String entrada = scanner.nextLine();
 
             if (entrada.equalsIgnoreCase("sair")) {
                 break;
             }
-            jogo.proximaGeracao();
+            this.proximaGeracao();
         }
 
         scanner.close();
