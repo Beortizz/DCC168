@@ -96,14 +96,13 @@ public class JogoDaVida {
 
         for (int dx : direcoes) {
             for (int dy : direcoes) {
+                if (dx == 0 && dy == 0) continue;
                 int nx = x + dx;
                 int ny = y + dy;
-                if (nx >= 0 && nx < TAMANHO && ny >= 0 && ny < TAMANHO) {
-                    if (nx != x || ny != y) {
-                        contagem += tabuleiro[nx][ny];
-                    }
-                }
 
+                if (nx >= 0 && nx < TAMANHO && ny >= 0 && ny < TAMANHO) {
+                    contagem += tabuleiro[nx][ny];
+                }
             }
         }
 
