@@ -8,36 +8,47 @@ public class JogoDaVida {
     private int TAMANHO = 6;
     private int[][] tabuleiro;
 
+    public int[][] getTabuleiro() {
+        return tabuleiro;
+    }
+
+    public int getTAMANHO() {
+        return TAMANHO;
+    }
+
+    public void setTAMANHO(int TAMANHO) {
+        this.TAMANHO = TAMANHO;
+    }
+
     public JogoDaVida() {
         this.setTabuleiro(new int[TAMANHO][TAMANHO]);
+        this.inicializarTabuleiro();
     }
 
     public void Run() {
-        this.inicializarTabuleiro();
-        Scanner scanner = new Scanner(System.in);
+        try (Scanner scanner = new Scanner(System.in)) {
 
-        while (true) {
-            System.out.println("Geração Atual:");
-            this.mostrarTabuleiro();
-            System.out.println("Digite ENTER para a próxima geração ou 'sair' para finalizar.");
-            String entrada = scanner.nextLine();
+            while (true) {
+                System.out.println("Geração Atual:");
+                this.mostrarTabuleiro();
+                System.out.println("Digite ENTER para a próxima geração ou 'sair' para finalizar.");
+                String entrada = scanner.nextLine();
 
-            if (entrada.equalsIgnoreCase("sair"))
-                break;
-            else if (entrada.equalsIgnoreCase(""))
-                this.proximaGeracao();
-            else {
-                scanner.close();
-                throw new RuntimeException("Entrada inválida.");
+                if (entrada.equalsIgnoreCase("sair"))
+                    break;
+                else if (entrada.equalsIgnoreCase(""))
+                    this.proximaGeracao();
+                else {
+                    scanner.close();
+                    throw new RuntimeException("Entrada inválida.");
+                }
             }
         }
-
-        scanner.close();
     }
 
     public void setTabuleiro(int[][] tabuleiro) {
         this.tabuleiro = tabuleiro;
-        this.TAMANHO = tabuleiro.length;
+        this.setTAMANHO(tabuleiro.length);
     }
 
     public int getCelula(int x, int y) {
@@ -48,7 +59,7 @@ public class JogoDaVida {
         tabuleiro[x][y] = valor;
     }
 
-    private void inicializarTabuleiro() {
+    public void inicializarTabuleiro() {
         Random random = new Random();
         for (int lin = 0; lin < TAMANHO; lin++) {
             for (int col = 0; col < TAMANHO; col++) {
