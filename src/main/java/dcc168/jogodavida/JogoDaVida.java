@@ -39,7 +39,6 @@ public class JogoDaVida {
                 else if (entrada.equalsIgnoreCase(""))
                     this.proximaGeracao();
                 else {
-                    scanner.close();
                     throw new RuntimeException("Entrada inválida.");
                 }
             }

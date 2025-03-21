@@ -8,8 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JogoDaVidaTest {
     private JogoDaVida jogo;
@@ -157,7 +156,7 @@ public class JogoDaVidaTest {
         try {
             jogo.Run();
         } catch (RuntimeException e) {
-            Assertions.fail();
+            fail();
         }
         System.setIn(systemInBackup);
     }
@@ -169,7 +168,7 @@ public class JogoDaVidaTest {
         System.setIn(in);
         try {
             jogo.Run();
-            Assertions.fail();
+            fail();
         } catch (RuntimeException e) {
             assertEquals("Entrada inválida.", e.getMessage());
         }
@@ -178,26 +177,35 @@ public class JogoDaVidaTest {
 
     @Test
     void testCommandoEnter() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
         var systemInBackup = System.in;
         var in = new ByteArrayInputStream("\nsair".getBytes());
         System.setIn(in);
         try {
             jogo.Run();
+            var output = outputStream.toString();
+            var expected = "Geração Atual:\n" +
+                    "0 0 0 0 0 0 \n" .repeat(6)+
+                    "Digite ENTER para a próxima geração ou 'sair' para finalizar.\n" +
+                    "Geração Atual:\n" +
+                    "0 0 0 0 0 0 \n" .repeat(6)+
+                    "Digite ENTER para a próxima geração ou 'sair' para finalizar.";
+            assertTrue(output.contains(expected));
         } catch (RuntimeException e) {
-            Assertions.fail();
+            fail();
         }
         System.setIn(systemInBackup);
     }
 
     @Test
     void testInicializacaoTabuleiro() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
         jogo.inicializarTabuleiro();
-        for (int lin = 0; lin < jogo.getTAMANHO(); lin++) {
-            for (int col = 0; col < jogo.getTAMANHO(); col++) {
-                int valor = jogo.getCelula(lin, col);
-                Assertions.assertTrue(valor == 0 || valor == 1, "Célula deve ser 0 ou 1");
-            }
-        }
+        jogo.mostrarTabuleiro();
+        String expected ="0 0 0 0 0 0 \n".repeat(6);
+        assertNotEquals(expected, outputStream.toString());
     }
 
     @Test
@@ -210,7 +218,7 @@ public class JogoDaVidaTest {
             jogo.Run();
             assertNotEquals(oldTabuleiro, jogo.getTabuleiro());
         } catch (RuntimeException e) {
-            Assertions.fail();
+            fail();
         }
         System.setIn(systemInBackup);
     }
