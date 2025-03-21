@@ -30,6 +30,11 @@ public class JogoDaVidaTest {
                 Assertions.assertTrue(valor == 0 || valor == 1, "Célula deve ser 0 ou 1");
             }
         }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        newJogo.mostrarTabuleiro();
+        String expected ="0 0 0 0 0 0 \n".repeat(6);
+        assertNotEquals(expected, outputStream.toString());
     }
 
     @Test
